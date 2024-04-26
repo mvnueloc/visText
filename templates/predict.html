@@ -1,22 +1,34 @@
 {% extends "base.html" %} {% block content %}
 
-<div class="float-container">
-
-    <div class="float-child">
-        <h2 class="a">Antes</h2>
-      <div class="green"><img src="{{ url_for('upload_img', filename=file_name) }}" class="img-fluid"></div>
+<div class="lg:flex justify-center pt-20">
+  <div class="flex justify-center mb-4">
+    <div class="">
+      <h2 class="text-center text-lg font-semibold">Antes</h2>
+      <img
+        src="{{ url_for('upload_img', filename=file_name) }}"
+        class="w-80 h-80"
+      />
     </div>
-    
-    <div class="float-child">
-        <h2 class="a">Despues</h2>
-      <div class="blue"><img src="{{ url_for('cartoon_img', filename=cartoon_file) }}" class="img-fluid"></div>
-    </div>
+  </div>
 
-    <div>
+  <div class="flex justify-center mb-4">
+    <div class="">
+      <h2 class="text-center text-lg font-semibold">Despues</h2>
+      <img
+        src="{{ url_for('cartoon_img', filename=cartoon_file) }}"
+        class="w-80 h-80"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="mb-8">
+  <h2 class="text-center text-lg font-semibold">Texto analizado</h2>
+  <div class="flex justify-center">
+    <div class="bg-blue-700 text-white rounded-lg p-2">
       <p>{{ text }}</p>
     </div>
-    
   </div>
- 
+</div>
 
 {% endblock %}

@@ -1,5 +1,4 @@
-﻿# coding=utf-8
-import sys
+﻿import sys
 import os, shutil
 import glob
 import re
@@ -27,8 +26,6 @@ def upload_img(filename):
 def cartoon_img(filename):
     
     return send_from_directory(app.config['CARTOON_FOLDER'], filename)
-
-
 
 def cartoonize_gray(img):
     # Convert the input image to gray scale 
@@ -59,7 +56,7 @@ def cartoonize_gray(img):
     return im_color
 
 def extract_text(image_path):
-    reader = easyocr.Reader(['en']) # especifica el idioma, en este caso inglés
+    reader = easyocr.Reader(['es'])
     result = reader.readtext(image_path)
     text = ' '.join([item[1] for item in result])
     return text
@@ -87,22 +84,21 @@ def predict():
         
         # reading the uploaded image
         img = cv2.imread(file_path)
-        if style=="gray":
-            cart_fname =file_name + "_gray_cartoon.jpg"
-            cartoonized = cartoonize_gray(img)
-            cartoon_path = os.path.join(
-                basepath, 'cartoon_images', secure_filename(cart_fname))
-            fname=os.path.basename(cartoon_path)
-            print(fname)
-            cv2.imwrite(cartoon_path,cartoonized)
+        
+        
+        cart_fname =file_name + "_gray.jpg"
+        cartoonized = cartoonize_gray(img)
+        cartoon_path = os.path.join(
+            basepath, 'cartoon_images', secure_filename(cart_fname))
+        fname=os.path.basename(cartoon_path)
+        print(fname)
+        cv2.imwrite(cartoon_path,cartoonized)
+        
+        extracted_txt = extract_text(cartoon_path)
+        
+        return render_template('predict.html',file_name=file_name, cartoon_file=fname, text=extracted_txt)
+
             
-            # Extract text from the cartoonized image
-            extracted_txt = extract_text(cartoon_path)
-            
-            return render_template('predict.html',file_name=file_name, cartoon_file=fname, text=extracted_txt)
-        else:
-            flash('Please select style')
-            return render_template('index.html')  
         
     return ""
 

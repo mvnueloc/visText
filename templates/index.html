@@ -1,15 +1,25 @@
 {% extends "base.html" %} {% block content %}
-
-
-
-<h2></h2>
-
-<div>
-    <form id="upload-file"  action="/predict" method="POST" enctype="multipart/form-data">
-      <center> {% for message in get_flashed_messages() %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="flex justify-center items-center h-full pt-20">
+  <div class="">
+    <form
+      id="upload-file"
+      action="/predict"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <center>
+        {% for message in get_flashed_messages() %}
+        <div
+          class="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
           {{ message }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -17,31 +27,84 @@
         {% endfor %}
       </center>
 
-      <div class="card">
-        <div class="card-header">
-        <h4> Sube tu imagen </h4>
-        </div>
+      <div class="mb-8">
         <div class="card-body">
-          <h5 class="card-title">Busca tu imagen</h5>
-          <p class="card-text"><input type="file" id="file" name="file" ></p>
+          <div class="flex items-center justify-center">
+            <label
+              for="file"
+              class="flex flex-col items-center justify-center w-full h-auto px-32 lg:px-96 border-2 border-gray-100 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            >
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <svg
+                  class="w-48 h-48 mb-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span class="font-semibold">Click to upload</span> or drag and
+                  drop
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  SVG, PNG, JPG or GIF (MAX. 800x400px)
+                </p>
+                <div class="mt-4">
+                  <img
+                    id="imagePreview"
+                    src="#"
+                    alt="your image"
+                    class="w-48 h-36 object-contain"
+                  />
+                </div>
+              </div>
+              <input id="file" type="file" name="file" class="hidden" />
+            </label>
+          </div>
 
-          <p>
-            <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Selecciona una accion</label>
-            <select name="style" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-              <option value="default">Selecciona...</option>
-              <option value="gray">Escala de grises</option>
-            </select>
-          </p>
-          
-          <input type="submit" class="btn btn-primary " name="submit" value="Analizar">
+          <div class="flex justify-center">
+            <input
+              type="submit"
+              class="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              name="submit"
+              value="Analizar"
+            />
+          </div>
         </div>
       </div>
     </form>
+  </div>
 
-    <div class="loader" style="display:none;"></div>
-    <h3 id="result">
-      <span> </span>
-    </h3>
+  <style>
+    img[src="#"] {
+      display: none;
+    }
+  </style>
+
+  <script>
+    document
+      .querySelector("input[type=file]")
+      .addEventListener("change", function (event) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          document.getElementById("imagePreview").src = event.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      });
+  </script>
+
+  <div class="loader" style="display: none"></div>
+  <h3 id="result">
+    <span> </span>
+  </h3>
 </div>
 
 {% endblock %}
